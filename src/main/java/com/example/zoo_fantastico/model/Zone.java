@@ -6,22 +6,16 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Creature {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Zone {
+   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank @Column(nullable = false)
     private String name;
 
     @NotBlank @Column(nullable = false)
-    private String species;
+    private String zoneType;
 
-    @PositiveOrZero
-    private double size;
-
-    @Min(1) @Max(10)
-    private int dangerLevel;
-
-    @NotBlank
-    private String healthStatus;
+    @NotBlank @Positive
+    private double areaMeters;
 }
