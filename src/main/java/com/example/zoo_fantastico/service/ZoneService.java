@@ -12,7 +12,7 @@ public class ZoneService{
 
     private final ZoneRepository zoneRepository;
 
-    public ZoneRepository(ZoneRepository zoneRepository) {this.zoneRepository = zoneRepository; }
+    public ZoneService(ZoneRepository zoneRepository) {this.zoneRepository = zoneRepository; }
 
     public Zone create(Zone zone){ return zoneRepository.save(zone); }
 
