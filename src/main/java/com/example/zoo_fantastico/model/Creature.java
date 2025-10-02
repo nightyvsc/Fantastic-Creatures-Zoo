@@ -2,10 +2,12 @@ package com.example.zoo_fantastico.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.NoArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Creature {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,4 +26,8 @@ public class Creature {
 
     @NotBlank
     private String healthStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
 }
