@@ -3,10 +3,12 @@ package com.example.zoo_fantastico.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Zone {
    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
