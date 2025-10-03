@@ -1,4 +1,4 @@
-package service;
+package com.example.zoo_fantastico.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -7,7 +7,6 @@ import java.util.Optional;
 import com.example.zoo_fantastico.exception.ResourceNotFoundException;
 import com.example.zoo_fantastico.model.Creature;
 import com.example.zoo_fantastico.repository.CreatureRepository;
-import com.example.zoo_fantastico.service.CreatureService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

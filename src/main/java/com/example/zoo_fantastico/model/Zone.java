@@ -17,10 +17,10 @@ public class Zone {
     private String name;
 
     @NotBlank @Column(nullable = false)
-    private String zoneType;
+    private String description;
 
     @Positive
-    private double areaMeters;
+    private int capacity;
 
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Creature> creatures;
