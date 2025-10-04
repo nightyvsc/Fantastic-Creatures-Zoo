@@ -28,6 +28,7 @@ public class Creature {
     private String healthStatus;
 
     @ManyToOne
+    @NotNull
     @JoinColumn(name = "zone_id")
     private Zone zone;
 }
