@@ -13,6 +13,8 @@
 .idea/**/shelf
 .idea/
 .vscode/
+.mvn/
+target/
 
 # AWS User-specific
 .idea/**/aws.xml
