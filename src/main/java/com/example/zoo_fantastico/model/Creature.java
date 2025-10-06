@@ -1,5 +1,7 @@
 package com.example.zoo_fantastico.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,9 @@ public class Creature {
     @NotBlank
     private String healthStatus;
 
+    @ManyToOne
     @NotNull
     @JoinColumn(name = "zone_id")
+    @JsonBackReference
     private Zone zone;
 }
