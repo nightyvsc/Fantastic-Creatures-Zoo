@@ -19,7 +19,6 @@
 
     <properties>
         <java.version>17</java.version>
-        <!-- Ajuste 1: forzar UTF-8 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -50,11 +49,19 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Lombok (boilerplate) -->
+        <!-- Lombok (para generar getters/setters automáticamente) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.32</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Base de datos H2 (solo para pruebas de integración) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Tests -->
@@ -66,7 +73,6 @@
     </dependencies>
 
     <build>
-        <!-- Ajuste 2: anular filtering para resources -->
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -84,11 +90,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot (run/package) -->
+            <!-- Spring Boot (para ejecutar y empaquetar el proyecto) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
+
 </project>
