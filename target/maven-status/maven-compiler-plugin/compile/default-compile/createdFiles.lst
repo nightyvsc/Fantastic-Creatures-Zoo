@@ -1,2 +1,2 @@
-com\example\zoo_fantastico\ZooFantasticoApplication.class
-com\example\zoo_fantastico\controller\CreatureController.class
+com/example/zoo_fantastico/controller/CreatureController.class
+com/example/zoo_fantastico/ZooFantasticoApplication.class
