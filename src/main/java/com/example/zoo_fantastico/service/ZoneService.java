@@ -1,6 +1,7 @@
 package com.example.zoo_fantastico.service;
 
 import com.example.zoo_fantastico.exception.ResourceNotFoundException;
+import com.example.zoo_fantastico.exception.ZoneNotEmptyException;
 import com.example.zoo_fantastico.model.Zone;
 import com.example.zoo_fantastico.repository.ZoneRepository;
 import org.springframework.stereotype.Service;
@@ -26,18 +27,22 @@ public class ZoneService{
     public Zone update(long id, Zone updated){
         Zone z = findById(id);
         z.setName(updated.getName());
-        z.setZoneType(updated.getZoneType());
-        z.setAreaMeters(updated.getAreaMeters());
+        z.setDescription(updated.getDescription());
+        z.setCapacity(updated.getCapacity());
         return zoneRepository.save(z);
     }
 
     public void delete(long id){
-        Zone z = findById(id);
-        if(z.getCreatures().isEmpty()){
-            zoneRepository.delete(z);
-        }else{
-            throw new IllegalStateException("Cannot delete a zone with creatures assigned");
+        Zone zone = findById(id);
+        if(!zone.getCreatures().isEmpty()){
+            throw new ZoneNotEmptyException(
+                String.format("Cannot delete zone '%s' (ID: %d) because it contains %d creatures. Remove all creatures first.", 
+                    zone.getName(), 
+                    zone.getId(), 
+                    zone.getCreatures().size())
+            );
         }
+        zoneRepository.delete(zone);
     }
 
 

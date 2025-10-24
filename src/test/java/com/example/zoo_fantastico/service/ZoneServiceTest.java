@@ -1,6 +1,8 @@
 package com.example.zoo_fantastico.service;
 
 import com.example.zoo_fantastico.exception.ResourceNotFoundException;
+import com.example.zoo_fantastico.exception.ZoneNotEmptyException;
+import com.example.zoo_fantastico.model.Creature;
 import com.example.zoo_fantastico.model.Zone;
 import com.example.zoo_fantastico.repository.ZoneRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,14 +39,14 @@ public class ZoneServiceTest {
     void testCreate_ShouldSaveAndReturnZone() {
         Zone toSave = new Zone();
         toSave.setName("Magical Forest");
-        toSave.setZoneType("Enchanted");
-        toSave.setAreaMeters(5000.0);
+        toSave.setDescription("A lush area full of enchanted creatures");
+        toSave.setCapacity(300);
 
         Zone saved = new Zone();
         saved.setId(1L);
         saved.setName(toSave.getName());
-        saved.setZoneType(toSave.getZoneType());
-        saved.setAreaMeters(toSave.getAreaMeters());
+        saved.setDescription(toSave.getDescription());
+        saved.setCapacity(toSave.getCapacity());
 
         when(zoneRepository.save(toSave)).thenReturn(saved);
 
@@ -98,13 +100,13 @@ public class ZoneServiceTest {
         Zone existing = new Zone();
         existing.setId(id);
         existing.setName("Old Zone");
-        existing.setZoneType("Old Type");
-        existing.setAreaMeters(100.0);
+        existing.setDescription("Old description");
+        existing.setCapacity(100);
 
         Zone updated = new Zone();
         updated.setName("New Zone");
-        updated.setZoneType("New Type");
-        updated.setAreaMeters(200.0);
+        updated.setDescription("Freshly renovated zone");
+        updated.setCapacity(200);
 
         when(zoneRepository.findById(id)).thenReturn(Optional.of(existing));
         when(zoneRepository.save(any(Zone.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -112,15 +114,15 @@ public class ZoneServiceTest {
         Zone result = zoneService.update(id, updated);
 
         assertEquals("New Zone", result.getName());
-        assertEquals("New Type", result.getZoneType());
-        assertEquals(200.0, result.getAreaMeters());
+        assertEquals("Freshly renovated zone", result.getDescription());
+        assertEquals(200, result.getCapacity());
 
         ArgumentCaptor<Zone> captor = ArgumentCaptor.forClass(Zone.class);
         verify(zoneRepository).save(captor.capture());
         Zone savedArg = captor.getValue();
         assertEquals("New Zone", savedArg.getName());
-        assertEquals("New Type", savedArg.getZoneType());
-        assertEquals(200.0, savedArg.getAreaMeters());
+        assertEquals("Freshly renovated zone", savedArg.getDescription());
+        assertEquals(200, savedArg.getCapacity());
     }
 
     @Test
@@ -132,12 +134,13 @@ public class ZoneServiceTest {
         verify(zoneRepository, never()).save(any());
     }
 
-    // -------------------- delete --------------------
+    // -------------------- delete 222 --------------------
     @Test
     void testDelete_ShouldDelete_WhenNoCreatures() {
         Zone zone = new Zone();
         zone.setId(30L);
-        zone.setCreatures(new ArrayList<>()); // empty creatures list
+        zone.setName("Empty Plains");
+        zone.setCreatures(new ArrayList<>());
 
         when(zoneRepository.findById(30L)).thenReturn(Optional.of(zone));
 
@@ -150,12 +153,12 @@ public class ZoneServiceTest {
     void testDelete_ShouldThrow_WhenHasCreatures() {
         Zone zone = new Zone();
         zone.setId(40L);
-        // simulate non-empty creatures list
-        zone.setCreatures(Arrays.asList(new com.example.zoo_fantastico.model.Creature()));
+        zone.setName("Crowded Den");
+        zone.setCreatures(Arrays.asList(new Creature()));
 
         when(zoneRepository.findById(40L)).thenReturn(Optional.of(zone));
 
-        assertThrows(IllegalStateException.class, () -> zoneService.delete(40L));
+        assertThrows(ZoneNotEmptyException.class, () -> zoneService.delete(40L));
         verify(zoneRepository, never()).delete(any());
     }
 

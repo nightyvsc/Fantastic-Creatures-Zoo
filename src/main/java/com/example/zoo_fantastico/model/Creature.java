@@ -27,7 +27,7 @@ public class Creature {
     @NotBlank
     private String healthStatus;
 
-    @ManyToOne
+    @NotNull
     @JoinColumn(name = "zone_id")
     private Zone zone;
 }
