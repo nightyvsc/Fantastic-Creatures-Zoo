@@ -57,7 +57,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Base de datos H2 (solo para pruebas de integración) -->
+        <!-- Base de datos H2 (solo pruebas) -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -85,12 +85,23 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
                 <configuration>
                     <release>${java.version}</release>
+
+                    <!-- *** Esto es lo que Jenkins NECESITA para Lombok *** -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
+                        </path>
+                    </annotationProcessorPaths>
+
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot (para ejecutar y empaquetar el proyecto) -->
+            <!-- Spring Boot (para empaquetar el jar) -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
