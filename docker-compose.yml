@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Base de datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: zoo-fantastico-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: zoo_fantastico
+      MYSQL_USER: zoo_user
+      MYSQL_PASSWORD: Messi04
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      - zoo-network
+
+  # Backend Spring Boot
+  app:
+    build: .
+    container_name: zoo-fantastico-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/zoo_fantastico?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Bogota
+      SPRING_DATASOURCE_USERNAME: zoo_user
+      SPRING_DATASOURCE_PASSWORD: Messi04
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - zoo-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+
+networks:
+  zoo-network:
+    driver: bridge
